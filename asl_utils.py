@@ -12,7 +12,8 @@ def show_errors(guesses: list, test_set: SinglesData):
     :param guesses: list of test item answers, ordered
     :param test_set: SinglesData object
     :return:
-        nothing returned, prints error report
+        prints error report
+        returns WER
 
     WER = (S+I+D)/N  but we have no insertions or deletions for isolated words so WER = S/N
     """
@@ -24,8 +25,8 @@ def show_errors(guesses: list, test_set: SinglesData):
     for word_id in range(num_test_words):
         if guesses[word_id] != test_set.wordlist[word_id]:
             S += 1
-
-    print("\n**** WER = {}".format(float(S) / float(N)))
+    WER = float(S) / float(N)
+    print("\n**** WER = {}".format(WER))
     print("Total correct: {} out of {}".format(N - S, N))
     print('Video  Recognized                                                    Correct')
     print('=====================================================================================================')
@@ -36,7 +37,7 @@ def show_errors(guesses: list, test_set: SinglesData):
             if recognized_sentence[i] != correct_sentence[i]:
                 recognized_sentence[i] = '*' + recognized_sentence[i]
         print('{:5}: {:60}  {}'.format(video_num, ' '.join(recognized_sentence), ' '.join(correct_sentence)))
-
+    return WER
 
 def getKey(item):
     return item[1]
